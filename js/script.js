@@ -1,6 +1,4 @@
-// Portfólio — Matheus Vicente | UNINTER
-
-/* ---------- Menu mobile ---------- */
+// menu mobile — abre e fecha o nav quando clica no hambúrguer
 const navToggle = document.getElementById('navToggle');
 const navLinks  = document.getElementById('navLinks');
 
@@ -9,7 +7,7 @@ navToggle.addEventListener('click', () => {
   navToggle.setAttribute('aria-expanded', aberto);
 });
 
-// fecha o menu ao clicar num link
+// fecha o menu ao clicar num link (senão fica aberto depois de navegar)
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', () => {
     navLinks.classList.remove('aberto');
@@ -20,11 +18,10 @@ document.querySelectorAll('.nav-link').forEach(link => {
 document.addEventListener('click', e => {
   if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
     navLinks.classList.remove('aberto');
-    navToggle.setAttribute('aria-expanded', 'false');
   }
 });
 
-/* ---------- Link ativo conforme seção visível ---------- */
+// marca o link do menu como ativo conforme a seção visível na tela
 const secoes = document.querySelectorAll('section[id]');
 const links  = document.querySelectorAll('.nav-link');
 
@@ -39,71 +36,65 @@ const obsSecao = new IntersectionObserver(entries => {
 
 secoes.forEach(s => obsSecao.observe(s));
 
-/* ---------- Tema claro / escuro ---------- */
+// tema claro/escuro — salva a escolha no localStorage
 const btnTema = document.getElementById('btnTema');
-const TEMA_KEY = 'mv-tema';
 
 function setTema(t) {
   document.body.classList.toggle('tema-escuro', t === 'escuro');
   document.body.classList.toggle('tema-claro',  t !== 'escuro');
   btnTema.textContent = t === 'escuro' ? '☀️' : '🌙';
-  localStorage.setItem(TEMA_KEY, t);
+  localStorage.setItem('tema', t);
 }
 
-setTema(localStorage.getItem(TEMA_KEY) || 'claro');
+setTema(localStorage.getItem('tema') || 'claro');
 
 btnTema.addEventListener('click', () => {
   setTema(document.body.classList.contains('tema-escuro') ? 'claro' : 'escuro');
 });
 
-/* ---------- Filtro de projetos ---------- */
-const filtros  = document.querySelectorAll('.filtro');
-const cards    = document.querySelectorAll('.card-projeto');
-
-filtros.forEach(btn => {
+// filtro de projetos por categoria
+document.querySelectorAll('.filtro').forEach(btn => {
   btn.addEventListener('click', () => {
-    filtros.forEach(b => b.classList.remove('ativo'));
+    document.querySelectorAll('.filtro').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
 
     const cat = btn.dataset.filtro;
-    cards.forEach(c => {
-      c.classList.toggle('oculto', cat !== 'todos' && c.dataset.categoria !== cat);
+    document.querySelectorAll('.card-projeto').forEach(card => {
+      card.classList.toggle('oculto', cat !== 'todos' && card.dataset.categoria !== cat);
     });
   });
 });
 
-/* ---------- Animação das barras de skill ao entrar na tela ---------- */
-const barras = document.querySelectorAll('.barra-fill');
-
-const obsBarra = new IntersectionObserver(entries => {
+// anima as barras de skill quando entram na viewport
+const obsBarras = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
     const el  = entry.target;
     const alvo = el.style.width;
     el.style.width = '0';
     requestAnimationFrame(() => setTimeout(() => { el.style.width = alvo; }, 80));
-    obsBarra.unobserve(el);
+    obsBarras.unobserve(el);
   });
 }, { threshold: 0.3 });
 
-barras.forEach(b => obsBarra.observe(b));
+document.querySelectorAll('.barra-fill').forEach(b => obsBarras.observe(b));
 
-/* ---------- Validação e envio do formulário ---------- */
+// validação do formulário de contato
 const form = document.getElementById('formContato');
 const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-function erro(id, campo, msg) {
+function mostrarErro(campo, idSpan, msg) {
   campo.classList.add('erro');
   campo.classList.remove('ok');
-  const span = document.getElementById(id);
+  const span = document.getElementById(idSpan);
   span.textContent = msg;
   span.classList.add('vis');
 }
 
-function ok(id, campo) {
+function limparErro(campo, idSpan) {
   campo.classList.remove('erro');
   campo.classList.add('ok');
-  const span = document.getElementById(id);
+  const span = document.getElementById(idSpan);
   span.textContent = '';
   span.classList.remove('vis');
 }
@@ -112,33 +103,33 @@ function validar() {
   const nome     = document.getElementById('nome');
   const email    = document.getElementById('email');
   const mensagem = document.getElementById('mensagem');
-  let valido = true;
+  let ok = true;
 
   if (nome.value.trim().length < 3) {
-    erro('erroNome', nome, 'Informe seu nome completo.');
-    valido = false;
+    mostrarErro(nome, 'erroNome', 'Informe seu nome completo.');
+    ok = false;
   } else {
-    ok('erroNome', nome);
+    limparErro(nome, 'erroNome');
   }
 
+  // verifica formato do e-mail com regex
   if (!REGEX_EMAIL.test(email.value.trim())) {
-    erro('erroEmail', email, 'E-mail inválido — use o formato usuario@dominio.com');
-    valido = false;
+    mostrarErro(email, 'erroEmail', 'E-mail inválido — use o formato usuario@dominio.com');
+    ok = false;
   } else {
-    ok('erroEmail', email);
+    limparErro(email, 'erroEmail');
   }
 
   if (mensagem.value.trim().length < 10) {
-    erro('erroMensagem', mensagem, 'Mensagem muito curta (mínimo 10 caracteres).');
-    valido = false;
+    mostrarErro(mensagem, 'erroMensagem', 'Mensagem muito curta (mínimo 10 caracteres).');
+    ok = false;
   } else {
-    ok('erroMensagem', mensagem);
+    limparErro(mensagem, 'erroMensagem');
   }
 
-  return valido;
+  return ok;
 }
 
-// valida campo individualmente ao sair dele
 ['nome', 'email', 'mensagem'].forEach(id => {
   const el = document.getElementById(id);
   el.addEventListener('blur', validar);
@@ -149,9 +140,9 @@ function validar() {
   });
 });
 
-/* ---------- Modal de confirmação ---------- */
-const modal   = document.getElementById('modal');
-const overlay = document.getElementById('overlay');
+// modal de confirmação após envio
+const modal     = document.getElementById('modal');
+const overlay   = document.getElementById('overlay');
 const btnFechar = document.getElementById('btnFecharModal');
 
 function abrirModal() {
@@ -181,7 +172,6 @@ form.addEventListener('submit', e => {
   btn.textContent = 'Enviando...';
   btn.disabled = true;
 
-  // simula delay de envio
   setTimeout(() => {
     form.reset();
     form.querySelectorAll('input, textarea').forEach(el => el.classList.remove('ok', 'erro'));
