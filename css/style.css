@@ -1,26 +1,28 @@
 /* Portfólio Matheus Vicente — UNINTER 2026 */
 
 :root {
-  --verde:     #0d9488;
-  --verde-esc: #0f766e;
-  --laranja:   #f97316;
-  --fundo:     #f8fafc;
-  --card:      #ffffff;
-  --nav-bg:    #ffffff;
-  --texto:     #1e293b;
-  --suave:     #64748b;
-  --borda:     #e2e8f0;
-  --sombra:    0 4px 20px rgba(0,0,0,0.07);
+  --verde:     #2F5D8A;
+  --verde-esc: #24496C;
+  --laranja:   #B5541C;
+  --fundo:     #F5F2EC;
+  --card:      #FFFDF8;
+  --nav-bg:    #FFFDF8;
+  --texto:     #1E2A2F;
+  --suave:     #6B7680;
+  --borda:     #DED7CB;
+  --sombra:    none;
 }
 
 body.tema-escuro {
-  --fundo:   #0f172a;
-  --card:    #1e293b;
-  --nav-bg:  #0f172a;
-  --texto:   #f1f5f9;
-  --suave:   #94a3b8;
-  --borda:   #334155;
-  --sombra:  0 4px 20px rgba(0,0,0,0.35);
+  --verde:   #7FA8CC;
+  --laranja: #E8A06A;
+  --fundo:   #1E2A2F;
+  --card:    #26343A;
+  --nav-bg:  #1E2A2F;
+  --texto:   #F5F2EC;
+  --suave:   #8FA0A6;
+  --borda:   #35464D;
+  --sombra:  none;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +33,7 @@ html {
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
   background: var(--fundo);
   color: var(--texto);
   line-height: 1.65;
@@ -581,4 +583,169 @@ body.tema-escuro footer { background: #020617; }
   html { font-size: 15px; }
   .form { padding: 1.3rem; }
   .footer-inner { flex-direction: column; text-align: center; }
+}
+
+
+/* ============================================================
+   Ajuste editorial — tipografia serifada nos titulos,
+   superficies planas e cantos discretos.
+   ============================================================ */
+
+h1, h2, h3, h4,
+.titulo-secao {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+/* superficies planas: borda no lugar de sombra */
+.card-projeto,
+.card,
+.tl-body,
+.nav,
+nav {
+  box-shadow: none !important;
+}
+.card-projeto {
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.card-projeto:hover {
+  border-color: var(--texto);
+  transform: none;
+}
+
+.btn { border-radius: 4px; letter-spacing: .01em; }
+.filtro { border-radius: 4px; }
+
+/* tags: etiqueta sobria, sem pilula colorida */
+.card-tags span {
+  background: transparent;
+  border: 1px solid var(--borda);
+  border-radius: 3px;
+  color: var(--suave);
+  font-size: .78rem;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.hobby-tag {
+  background: transparent;
+  border: 1px solid var(--borda);
+  border-radius: 3px;
+  color: var(--suave);
+  font-size: .8rem;
+}
+
+/* thumb do card: faixa discreta no lugar do bloco colorido */
+.card-thumb {
+  background: var(--fundo);
+  border-bottom: 1px solid var(--borda);
+  color: var(--suave);
+}
+
+blockquote {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  border-left: 2px solid var(--laranja);
+  padding-left: 1rem;
+}
+
+.label-saudacao {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .76rem;
+  color: var(--laranja);
+  font-weight: 600;
+}
+
+/* stack agrupada — substitui as barras de percentual */
+.stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.6rem 2.4rem;
+}
+.stack-grupo h4 {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--laranja);
+  margin-bottom: .4rem;
+}
+.stack-grupo p {
+  font-size: .94rem;
+  line-height: 1.6;
+  color: var(--suave);
+}
+
+/* ------------------------------------------------------------
+   Hero: monograma discreto no lugar do disco em gradiente,
+   e fundo chapado.
+   ------------------------------------------------------------ */
+.hero {
+  background: var(--fundo);
+  min-height: auto;
+  padding-top: 132px;
+  padding-bottom: 96px;
+}
+.hero-inner {
+  align-items: flex-start;
+  gap: 3rem;
+}
+.avatar-circulo {
+  width: 92px;
+  height: 92px;
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid var(--borda);
+  border-top: 2px solid var(--laranja);
+  color: var(--texto);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  flex: none;
+}
+.hero h1 { font-size: clamp(2.6rem, 5vw, 3.6rem); }
+.hero .cargo { color: var(--suave); font-size: 1.05rem; }
+
+/* card de projeto mais denso */
+.card-thumb { height: 86px; }
+.card-thumb svg { width: 26px; height: 26px; opacity: .55; }
+.card-body { padding: 1.4rem 1.5rem 1.5rem; }
+.card-body h3 { font-size: 1.12rem; margin-bottom: .5rem; }
+.card-body p { font-size: .93rem; line-height: 1.6; color: var(--suave); }
+.avatar-circulo { box-shadow: none; animation: none; }
+.secao { padding-block: 76px; }
+
+.nota-confidencial {
+  max-width: 640px;
+  margin: 1.2rem auto 2.4rem;
+  padding: .9rem 1.1rem;
+  border-left: 2px solid var(--laranja);
+  background: var(--card);
+  font-size: .88rem;
+  line-height: 1.6;
+  color: var(--suave);
+  text-align: left;
+}
+
+.repo-privado {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .78rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+.repo-privado::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--laranja);
 }
